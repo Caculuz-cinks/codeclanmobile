@@ -1,4 +1,5 @@
 import 'package:codeclanmobile/blocs/blocs.dart';
+import 'package:codeclanmobile/screens/profile/edit_profile_view.dart';
 import 'package:codeclanmobile/values/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -243,7 +244,19 @@ class ProfileView extends StatelessWidget {
                                     borderRadius: 3,
                                     color:
                                         AppColors.buttonShade1.withOpacity(0.9),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => EditProfileView(
+                                            firstName:
+                                                '${state.user.firstName}',
+                                            lastName: '${state.user.lastName}',
+                                            email: '${state.user.email}',
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ],
                               )
