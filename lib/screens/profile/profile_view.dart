@@ -1,4 +1,5 @@
 import 'package:codeclanmobile/blocs/blocs.dart';
+import 'package:codeclanmobile/common/circular_loading_indicator.dart';
 import 'package:codeclanmobile/screens/profile/edit_profile_view.dart';
 import 'package:codeclanmobile/values/values.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +22,6 @@ class ProfileView extends StatelessWidget {
       },
       child: BlocBuilder<UserBloc, UserState>(
         builder: (BuildContext context, UserState state) {
-          // if (state is UserLoading) {
-          //   return Center(
-          //     child: CircularProgressIndicator(),
-          //   );
-          // }
           if (state is UserLoaded) {
             return Scaffold(
               backgroundColor: Color(0XFFf4f5f9),
@@ -268,7 +264,7 @@ class ProfileView extends StatelessWidget {
               ),
             );
           }
-          return Container();
+          return CircularLoadingIndicator();
         },
       ),
     );
