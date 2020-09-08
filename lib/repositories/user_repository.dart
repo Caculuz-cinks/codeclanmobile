@@ -33,6 +33,11 @@ class UserRepository {
     return user;
   }
 
+  Future<bool> editUserProfile(UserDto userDto) async {
+    final user = await apiService.editUserProfile(userDto);
+    return user;
+  }
+
   Future<void> deleteToken() async {
     /// delete from keystore/keychain
     await Future.delayed(Duration(seconds: 1));

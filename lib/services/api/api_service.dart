@@ -162,4 +162,21 @@ class ApiService implements IAPIService {
       }
     }
   }
+
+  @override
+  Future<bool> editUserProfile(UserDto userDto) async {
+    final url = '/user';
+    try {
+      Response response = await _dio.put(url, data: userDto.toJson());
+      return true;
+    } on DioError catch (e) {
+      if (e.response != null) {
+        ApiException result = ApiException.fromJson(e.response.data);
+        throw result.message;
+      } else {
+        print(e.error);
+        throw e.error;
+      }
+    }
+  }
 }

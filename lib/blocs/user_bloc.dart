@@ -25,6 +25,12 @@ class UserLoaded extends UserState {
   List<Object> get props => [user];
 }
 
+class EditProfileLoading extends UserState {}
+
+class EditProfileFailure extends UserState {}
+
+class EditProfileSuccess extends UserState {}
+
 // Events
 abstract class UserEvents extends Equatable {
   const UserEvents();
@@ -35,6 +41,14 @@ abstract class UserEvents extends Equatable {
 class FetchUser extends UserEvents {}
 
 class LoadUser extends UserEvents {}
+
+class EditButtonPressed extends UserEvents {
+  final UserDto userDto;
+
+  const EditButtonPressed({
+    @required this.userDto,
+  });
+}
 
 //Define Blocs
 
@@ -63,6 +77,16 @@ class UserBloc extends Bloc<UserEvents, UserState> {
 
         yield UserLoaded(user: user);
       } catch (e) {}
+    }
+    if (event is EditButtonPressed) {
+      yield EditProfileLoading();
+      try {
+        final UserDto userDto = await userRepository.getUserProfile();
+        await userRepository.editUserProfile(userDto);
+        EditProfileSuccess();
+      } catch (e) {
+        EditProfileFailure();
+      }
     }
   }
 }
