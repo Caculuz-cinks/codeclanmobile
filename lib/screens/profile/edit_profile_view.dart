@@ -28,7 +28,6 @@ class _EditProfileViewState extends State<EditProfileView> {
   final _passwordController = TextEditingController();
 
   bool _showPassword = false;
-  UserDto userDto = UserDto();
 
   @override
   void initState() {
@@ -185,20 +184,12 @@ class _EditProfileViewState extends State<EditProfileView> {
                       color: Colors.black87,
                       onPressed: state is! EditProfileLoading
                           ? () async {
-                              BlocListener(listener: (context, state) {
-                                userDto.firstName = _firstNameController.text;
-                                userDto.lastName = _secondNameController.text;
-                                userDto.email = _emailController.text;
-                                BlocProvider.of<UserBloc>(context)
-                                    .add(EditButtonPressed(userDto: userDto));
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProfileView(),
-                                  ),
-                                );
-                              });
-
+                              BlocProvider.of<UserBloc>(context).add(
+                                EditButtonPressed(
+                                    email: _emailController.text,
+                                    firstName: _firstNameController.text,
+                                    lastName: _secondNameController.text),
+                              );
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -33,8 +33,12 @@ class UserRepository {
     return user;
   }
 
-  Future<bool> editUserProfile(UserDto userDto) async {
-    final user = await apiService.editUserProfile(userDto);
+  Future<UserDto> editUserProfile(
+    String firstName,
+    String lastName,
+    String email,
+  ) async {
+    final user = await apiService.editUserProfile(firstName, lastName, email);
     return user;
   }
 

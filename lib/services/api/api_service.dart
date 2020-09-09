@@ -31,12 +31,14 @@ class ApiService implements IAPIService {
   Future<String> login(email, password) async {
     final url = '/auth/login';
     try {
-      Response response = await _dio.post(url,
-          data: {
-            "email": email,
-            "password": password,
-          },
-          options: Options(headers: {"requireToken": false}));
+      Response response = await _dio.post(
+        url,
+        data: {
+          "email": email,
+          "password": password,
+        },
+        options: Options(headers: {"requireToken": false}),
+      );
       LoginResDto result = LoginResDto.fromJson(response.data);
       return result.accessToken;
     } on DioError catch (e) {
@@ -164,11 +166,24 @@ class ApiService implements IAPIService {
   }
 
   @override
-  Future<bool> editUserProfile(UserDto userDto) async {
-    final url = '/user';
+  Future<UserDto> editUserProfile(
+    String firstName,
+    String lastName,
+    String email,
+  ) async {
+    final url = '/users';
     try {
-      Response response = await _dio.put(url, data: userDto.toJson());
-      return true;
+      Response response = await _dio.put(url,
+          data: {
+            'email': email,
+            'lastName': lastName,
+            'firstName': firstName,
+          },
+          options: Options(headers: {"requireToken": false}));
+      UserDto result = UserDto.fromJson(response.data);
+      return result;
+
+      // return true;
     } on DioError catch (e) {
       if (e.response != null) {
         ApiException result = ApiException.fromJson(e.response.data);

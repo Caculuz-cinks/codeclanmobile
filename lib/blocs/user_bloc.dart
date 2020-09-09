@@ -43,11 +43,21 @@ class FetchUser extends UserEvents {}
 class LoadUser extends UserEvents {}
 
 class EditButtonPressed extends UserEvents {
-  final UserDto userDto;
+  final String firstName;
+  final String lastName;
+  final String email;
 
   const EditButtonPressed({
-    @required this.userDto,
+    @required this.email,
+    this.firstName,
+    this.lastName,
   });
+  @override
+  List<Object> get props => [email, firstName, lastName];
+
+  @override
+  String toString() =>
+      'LoginButtonPressed { username: $email, firstname: $firstName, lastname: $lastName }';
 }
 
 //Define Blocs
@@ -81,8 +91,11 @@ class UserBloc extends Bloc<UserEvents, UserState> {
     if (event is EditButtonPressed) {
       yield EditProfileLoading();
       try {
-        final UserDto userDto = await userRepository.getUserProfile();
-        await userRepository.editUserProfile(userDto);
+        final UserDto user = await userRepository.editUserProfile(
+            event.firstName, event.lastName, event.email);
+
+        yield UserLoaded(user: user);
+
         EditProfileSuccess();
       } catch (e) {
         EditProfileFailure();
